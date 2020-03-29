@@ -1,0 +1,5 @@
+2020/03/29 13:48:05.469|INFO|UdpListenerService|Listening on 11000 
+2020/03/29 13:48:05.557|INFO|UdpListenerService|Waiting for broadcast 
+2020/03/29 13:48:05.573|INFO|Lifetime|Application started. Press Ctrl+C to shut down. 
+2020/03/29 13:48:05.573|INFO|Lifetime|Hosting environment: Development 
+2020/03/29 13:48:05.591|INFO|Lifetime|Content root path: D:\github\udp-link\src\UdpLink.Server 
