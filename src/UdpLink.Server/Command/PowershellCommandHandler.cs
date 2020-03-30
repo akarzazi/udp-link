@@ -6,6 +6,7 @@
 
     using UdpLink.Shared.Helpers;
     using UdpLink.Shared.Command;
+    using System.Text;
 
     public class PowershellCommandHandler : CommandHandlerBase<PowershellCommand>
     {
@@ -13,27 +14,47 @@
         {
             try
             {
-                var path = Path.Combine(ProgramUtils.GetBaseDir(), "scripts", DateTime.Now.ToString("HH-mm-ss_fff") + ".ps1");
+                var path = Path.Combine(ProgramUtils.GetBaseDir(), "scripts", DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_fff") + ".ps1");
                 var fi = new FileInfo(path);
 
                 fi.Directory.Create();
-                File.WriteAllText(path, payload.CommandText);
+                File.WriteAllText(path, payload.CommandText, Encoding.UTF8);
 
-                Process process = new Process();
-                process.StartInfo.FileName = "powershell.exe";
-                process.StartInfo.Arguments = $@"-File  ""{ fi.FullName}"" -NoLogo ";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
+                var outputSb = new StringBuilder();
+                var errorSb = new StringBuilder();
+
+                var processStartInfo = new ProcessStartInfo
+                {
+                    StandardOutputEncoding = Encoding.GetEncoding(850),
+                    StandardErrorEncoding = Encoding.GetEncoding(850),
+
+                    FileName = "powershell.exe",
+                    Arguments = $@"-File  ""{ fi.FullName}"" -NoLogo -ExecutionPolicy bypass",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                };
+
+                using Process process = new Process();
+
+                process.StartInfo = processStartInfo;
+
+                process.OutputDataReceived += (sender, eventArgs) => outputSb.AppendLine(eventArgs.Data);
+                process.ErrorDataReceived += (sender, eventArgs) => errorSb.AppendLine(eventArgs.Data);
+
                 process.Start();
 
-                string output = process.StandardOutput.ReadToEnd();
-                string err = process.StandardError.ReadToEnd();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
                 process.WaitForExit();
 
+                string output = outputSb.ToString();
+                string err = errorSb.ToString();
+
                 return
-$@"
+    $@"
 Command:
 {payload.CommandText}
 

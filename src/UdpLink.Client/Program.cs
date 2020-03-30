@@ -13,6 +13,8 @@ namespace UdpLink.Client
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             var config = new ConfigurationBuilder()
                             .SetBasePath(ProgramUtils.GetBaseDir())
                             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

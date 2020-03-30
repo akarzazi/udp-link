@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +40,7 @@ namespace UdpLink.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args, ListenerConfig config)
         {
-
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             return Host.CreateDefaultBuilder(args)
                  .UseWindowsService()
