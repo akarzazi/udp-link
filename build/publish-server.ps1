@@ -1,2 +1,2 @@
 $solutionRoot = (get-item $PSScriptRoot ).parent.FullName;
-dotnet publish "$solutionRoot\src\UdpLink.Server" -o "$solutionRoot\out" -r win-x64 -c Release --self-contained true  /p:PublishSingleFile=true
+dotnet publish "$solutionRoot\src\UdpLink.Server" -o "$solutionRoot\out\udp-link-server\" -r win-x64 -c Release --self-contained true  /p:PublishSingleFile=true

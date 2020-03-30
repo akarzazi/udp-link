@@ -22,8 +22,6 @@ namespace UdpLink.Server
     {
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
             var baseDir = ProgramUtils.GetBaseDir();
             Directory.SetCurrentDirectory(baseDir);
 
