@@ -44,6 +44,7 @@ namespace UdpLink.Server
                  .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    hostContext.HostingEnvironment.ContentRootPath = ProgramUtils.GetBaseDir();
                     services.AddTransient<ListenerConfig>((s) => config);
                     services.AddHostedService<UdpListenerService>();
                     RegisterCmdHandlers(services);
